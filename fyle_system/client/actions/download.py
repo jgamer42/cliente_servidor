@@ -7,14 +7,11 @@ class Download():
     def execute(self,file:str,connection_pool:dict,user:str,**kwargs):
         file_information = self.get_storers_from_file(file,user,connection_pool["ORQUESTER"])
         data = self.download_from_storers(file_information["chunks"],connection_pool)
-        print(data)
         hash = hash_file(data)
-        print(data)
         if hash == file_information["hash"]:
             write_file(file,data)
             print(f"File {file} downloaded")
         else:
-            print(hash,file_information["hash"])
             print("File corrupted")
         
     
@@ -33,7 +30,6 @@ class Download():
     
     def download_from_storers(self,chunks,connection_pool):
         data = io.BytesIO()
-        print(chunks)
         for chunk in chunks:
             message = {
                 "action":"download",

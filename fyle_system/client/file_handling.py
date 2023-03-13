@@ -20,10 +20,6 @@ def read_file(file_name:str)->list:
                 output.append(data_from_file)
                 aux = data_from_file
                 data = data + aux
-                if data_from_file == aux:
-                    print("True")
-                else:
-                    print("False")
             else:
                 break
         except:

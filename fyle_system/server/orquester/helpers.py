@@ -44,18 +44,13 @@ class Config(metaclass=Singelton):
         data = json.loads(file.read())
         self.data = data
         file.close()
+
+    def add_new_storer(self,host,size):
+        self.data["storers"].append({host:size})
+
     
     def export(self):
         file = open(f"configs/{self.json}","w")
         file.write(json.dumps(self.data))
         file.close()
 
-class Conections(metaclass=Singelton):
-    json = "conections"
-    def __init__(self,conections_to_open):
-        self.data = {}
-        for conection in conections_to_open:
-            context = zmq.Context()
-            socket = context.socket(zmq.REQ)
-            socket.connect(f"tcp://{conection}")
-            self.data[conection] = socket

@@ -1,7 +1,7 @@
 import zmq
 import json
 from actions import ACTION_MAPS
-from helpers import Index,Config,Conections
+from helpers import Index,Config
 from actions.base import Action
 
 def set_up_application(port:int)->zmq.sugar.socket.Socket:
@@ -24,7 +24,6 @@ def main_loop(socket:zmq.Context)->None:
 if __name__ == '__main__':
     index:Index = Index()
     config:Config = Config()
-    conections:Conections = Conections(list(config.data["storers"]))
     socket:zmq.sugar.socket.Socket = set_up_application(config.data["port"])
     try:
         print("API ready to recive messages")

@@ -6,12 +6,12 @@ class Upload():
     def execute(self,file:str,connection_pool:dict,user:str,**kwargs)->dict:
         data,chunks = read_file(file)
         hash_from_file = hash_file(data)
-        #if not self.file_exist_in_server(hash_from_file,connection_pool["ORQUESTER"]):
-        storers = self.get_storers(len(chunks),connection_pool["ORQUESTER"])
-        stored_chunks = self.store_chunks(chunks,storers,connection_pool)
-        self.notify_upload_file(user,file,hash_from_file,stored_chunks,connection_pool["ORQUESTER"])
-        #else:
-        #    self.upload_reference(user,file,hash_from_file,connection_pool["ORQUESTER"])
+        if not self.file_exist_in_server(hash_from_file,connection_pool["ORQUESTER"]):
+            storers = self.get_storers(len(chunks),connection_pool["ORQUESTER"])
+            stored_chunks = self.store_chunks(chunks,storers,connection_pool)
+            self.notify_upload_file(user,file,hash_from_file,stored_chunks,connection_pool["ORQUESTER"])
+        else:
+            self.upload_reference(user,file,hash_from_file,connection_pool["ORQUESTER"])
     
     def file_exist_in_server(self,hash:str,connection:object)->bool:
         message = {

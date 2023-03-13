@@ -11,6 +11,7 @@ class Upload(Action):
             return [json.dumps(output).encode("utf-8")]
         elif kwargs["type"] == "reference":
             self.save_in_index_map(kwargs["user"],kwargs["name"],kwargs.get("hash"),kwargs.get("chunks",None))
+            self.update_file_size(kwargs.get("chunks",[]))
             return [f"File {kwargs['name']} succesfully uploaded".encode("utf-8")]
         
     
@@ -23,6 +24,12 @@ class Upload(Action):
             self.index.data["hashes"][file_name] = chunks
         self.index.data["files"][f"{user}-{user_file_name}"] = f"{file_name}"
     
+    def update_file_size(self,chunks):
+        global DEFAULT_CHUNK_SIZE
+        for chunk in chunks:
+            storer = list(chunk.keys())[0]
+            self.config.data["storers"][storer]["size"] = self.config.data["storers"][storer]["size"] - DEFAULT_CHUNK_SIZE
+            self.config.data["storers"][storer]["files"].append(chunk[storer])
 
     def pick_storers(self,number_of_chunks:int):
         global DEFAULT_CHUNK_SIZE
