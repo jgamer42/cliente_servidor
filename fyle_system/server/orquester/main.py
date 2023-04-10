@@ -14,11 +14,14 @@ def set_up_application(port:int)->zmq.sugar.socket.Socket:
 def main_loop(socket:zmq.Context)->None:
     while True:
         raw_message:bytes = socket.recv_multipart()
+        print(f"Message received {raw_message}")
         pre_prod_message:str = raw_message[0].decode("utf-8")
         file = raw_message[1] if len(raw_message) > 1 else None
         payload:dict = json.loads(pre_prod_message)
+        
         action_to_execute:Action = ACTION_MAPS[payload["action"]]
         response:list = action_to_execute.execute(**payload["payload"],data=file)
+        print(f"Message answered {response[0]}")
         socket.send_multipart(response)
 
 if __name__ == '__main__':
