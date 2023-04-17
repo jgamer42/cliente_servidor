@@ -1,6 +1,7 @@
 import os
 import sys
 import uuid
+import logging
 from argparse import  ArgumentParser,Namespace,_MutuallyExclusiveGroup
 from app import App
 from dotenv import load_dotenv
@@ -22,6 +23,7 @@ def read_args()->Namespace:
     parser.add_argument("--host",required=True,help="The host or the IP where the storer is set up")
     parser.add_argument("--name",required=True,help="The host or the IP where the storer is set up")
     parser.add_argument("--port",required=True,help="The port of the server to send data")
+    parser.add_argument("--logs",required=True,help="The port of the server to send data")
     constraints.add_argument("--first",required=False,help="Flag used to start a new ring",nargs="?",const=True,type=bool,default=False)
     constraints.add_argument("--predecessor",required=False,help="Preivous node that you kwon")
     return parser.parse_args()
@@ -36,9 +38,10 @@ def set_up_app(args:Namespace)->App:
 if __name__ == "__main__":
     args:Namespace = read_args()
     app:App = set_up_app(args)
-    print("App receiving messages")
+    logging.basicConfig(filename=f'{args.logs}')
+    logging.debug("App receiving messages")
     try:
         app.main_loop()
     except KeyboardInterrupt:
         #app.export()
-        print("sali")
+        logging.debug("sali")

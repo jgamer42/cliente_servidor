@@ -1,4 +1,3 @@
-from tqdm import tqdm
 CHUNK_SIZE =  (1024*1024)*5 #5MB
 def read_file(file_to_read:str):
     global CHUNK_SIZE

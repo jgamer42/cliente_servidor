@@ -9,11 +9,12 @@ if utils_path:
 else:
     print(".env not configured killing the server")
     sys.exit(1)
-from actions import Upload
+from actions import Upload,Download
 from zmq_utils import get_context
 
 ACTIONS_MAPS={
-    "upload":Upload()
+    "upload":Upload(),
+    "download":Download()
 }
 def read_args()->Namespace:
     parser:ArgumentParser = ArgumentParser(description='Client to upload files to the file server')
