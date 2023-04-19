@@ -38,7 +38,8 @@ def set_up_app(args:Namespace)->App:
 if __name__ == "__main__":
     args:Namespace = read_args()
     app:App = set_up_app(args)
-    logging.basicConfig(filename=f'{args.logs}')
+    logging.basicConfig(filename=f'{args.logs}', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.warning('This will get logged to a file')
     logging.debug("App receiving messages")
     try:
         app.main_loop()
